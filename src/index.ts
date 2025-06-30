@@ -1,11 +1,11 @@
 import express from 'express'
-const app = express()
-const port = 3000
+import productsRoutes from './routes/products'
 
-app.get('/', (req, res) => {
-    res.send('Hello World!')
-})
+const app = express()
+const port = process.env.PORT!
+
+app.use("/products", productsRoutes)
 
 app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
+    console.log(`Listening on port ${port}`)
 })
