@@ -26,3 +26,5 @@ export const createUserSchema = createInsertSchema(UsersTable)
     name: true,
     passwordHash: true,
   }).strict()
+
+export const updateUserSchema = createUserSchema.partial()
