@@ -8,6 +8,13 @@
       "when": 1751418637205,
       "tag": "0000_familiar_speed",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1751489349935,
+      "tag": "0001_lowly_tusk",
+      "breakpoints": true
     }
   ]
 }

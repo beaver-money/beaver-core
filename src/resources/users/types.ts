@@ -1,7 +1,6 @@
 import { InferSelectModel } from "drizzle-orm"
-import { UsersTable } from "./schema"
+import { createUserSchema, UsersTable } from "./schema"
+import z from 'zod/v4';
 
 export type User = InferSelectModel<typeof UsersTable>
-export type NewUser = Partial<Omit<User, 'id'>> & Pick<User, 'email' | 'name' | 'passwordHash'>
-export type UpdateUser = Partial<NewUser> & Pick<User, 'id'>
-export type DeleteUser = Pick<User, 'id'>
+export type CreateUserInput = z.infer<typeof createUserSchema>
