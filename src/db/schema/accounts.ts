@@ -6,9 +6,7 @@ import { AccountMembershipsTable } from "./account-memberships"
 export const AccountsTable = pgTable('accounts', {
     id: uuid('id').primaryKey().defaultRandom(),
     name: varchar('name', { length: 150 }).notNull(),
-    primaryUserId: uuid('primary_user_id')
-        .notNull()
-        .references(() => UsersTable.id),
+    primaryUserId: uuid('primary_user_id').notNull().references(() => UsersTable.id),
     createdAt: timestamp('created_at').defaultNow().notNull(),
     updatedAt: timestamp('updated_at').defaultNow().$onUpdate(() => new Date()).notNull(),
 })

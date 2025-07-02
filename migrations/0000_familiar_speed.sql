@@ -1,11 +1,11 @@
 CREATE TYPE "public"."account_roles" AS ENUM('EDITOR', 'VIEWER');--> statement-breakpoint
 CREATE TABLE "account_memberships" (
-	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"account_id" uuid NOT NULL,
 	"user_id" uuid NOT NULL,
 	"role" "account_roles" DEFAULT 'EDITOR' NOT NULL,
 	"invited_at" timestamp DEFAULT now() NOT NULL,
-	"joined_at" timestamp
+	"joined_at" timestamp,
+	CONSTRAINT "pk_account_memberships" PRIMARY KEY("account_id","user_id")
 );
 --> statement-breakpoint
 CREATE TABLE "accounts" (
@@ -25,7 +25,6 @@ CREATE TABLE "users" (
 	"updated_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-DROP TABLE "products" CASCADE;--> statement-breakpoint
 ALTER TABLE "account_memberships" ADD CONSTRAINT "account_memberships_account_id_accounts_id_fk" FOREIGN KEY ("account_id") REFERENCES "public"."accounts"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "account_memberships" ADD CONSTRAINT "account_memberships_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "accounts" ADD CONSTRAINT "accounts_primary_user_id_users_id_fk" FOREIGN KEY ("primary_user_id") REFERENCES "public"."users"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint

@@ -9,10 +9,11 @@ export const UsersTable = pgTable('users', {
     passwordHash: text('password_hash'),
     createdAt: timestamp('created_at').defaultNow().notNull(),
     updatedAt: timestamp('updated_at').defaultNow().$onUpdate(() => new Date()).notNull(),
-}, (table) => ({
-    emailIdx: uniqueIndex('idx_users_email').on(table.email),
-}))
-
+},
+    (table) => [
+        uniqueIndex('idx_users_email').on(table.email)
+    ]
+)
 
 export const usersRelations = relations(UsersTable, ({ many }) => ({
     memberships: many(AccountMembershipsTable),
