@@ -1,6 +1,6 @@
 import express, { json, urlencoded } from 'express'
 
-import userRoutes from './resources/users/routes'
+import userRoutes from '@src/resources/users/routes'
 
 const app = express()
 const port = process.env.PORT!
