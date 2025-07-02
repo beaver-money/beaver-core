@@ -12,9 +12,8 @@
     "build": "tsc --project tsconfig.json",
     "dev-build": "node --env-file=.env dist/index.js",
     "db:studio": "drizzle-kit studio",
-    "db:push": "drizzle-kit push",
-    "db:migrate": "drizzle-kit migrate",
-    "db:generate": "drizzle-kit generate"
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate"
   },
   "files": [
     "dist"
