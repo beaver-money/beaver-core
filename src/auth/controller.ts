@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Request, Response } from "express";
-import userService, { sanitize } from "../users/service";
+import userService, { sanitize } from "../resources/users/service";
 
 export async function signup(req: Request, res: Response) {
   const { email, password } = req.body;

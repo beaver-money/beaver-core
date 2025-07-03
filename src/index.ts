@@ -1,6 +1,6 @@
 import { globalError } from '@src/middleware/global-error'
-import authRoutes from "@src/resources/auth/routes"
-import v1 from '@src/resources/v1'
+import authRoutes from "@src/auth/routes"
+import v1 from '@src/resources'
 import { asyncHandler } from '@utils/async-handler'
 import express, { json, urlencoded } from 'express'
 

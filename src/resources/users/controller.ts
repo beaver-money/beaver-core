@@ -1,6 +1,6 @@
 
 import userService, { sanitize } from "@src/resources/users/service";
-import { updateAuth0User } from "@src/utils/auth0";
+import { updateAuth0User } from "@src/auth/utils";
 import { Request, Response } from "express";
 
 export async function getUserById(req: Request, res: Response) {
