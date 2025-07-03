@@ -11,7 +11,6 @@ const pool = new Pool({
 export const db = drizzle({
   client: pool,
   schema: {
-    // needed to use db.query
     users: UsersTable,
     accounts: AccountsTable,
     account_memberships: AccountMembershipsTable
