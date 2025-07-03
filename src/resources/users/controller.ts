@@ -1,6 +1,6 @@
 
 import userService, { sanitize } from "@src/resources/users/service";
-import { updateAuth0User } from "@src/auth/utils";
+import { updateAuth0User, deleteAuth0User } from "@src/auth/utils";
 import { Request, Response } from "express";
 
 export async function getUserById(req: Request, res: Response) {
@@ -30,10 +30,18 @@ export async function updateUser(req: Request, res: Response) {
 }
 
 export async function deleteUser(req: Request, res: Response) {
-  const [deletedUser] = await userService.delete(req.params.id);
-  if (!deletedUser) {
+  const user = await userService.findById(req.params.id);
+  if (!user) {
     res.status(404).json({ error: "User not found" });
     return;
   }
-  res.status(204).send();
+  try {
+    if (user.auth0Id) {
+      await deleteAuth0User(user.auth0Id);
+      await userService.delete(req.params.id);
+    }
+    res.status(204).send();
+  } catch (err: any) {
+    res.status(500).json({ error: "Failed to delete Auth0 user", details: err.response?.data || err.message });
+  }
 }

@@ -4,7 +4,7 @@ import v1 from '@src/resources'
 import { asyncHandler } from '@utils/async-handler'
 import express, { json, urlencoded } from 'express'
 
-import { withAuth } from '@src/middleware/auth0-jwt'
+import { withAuth } from '@src/middleware/with-auth'
 
 const app = express()
 const port = process.env.PORT!
