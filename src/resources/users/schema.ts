@@ -6,8 +6,8 @@ import { createInsertSchema } from "drizzle-zod"
 export const UsersTable = pgTable('users', {
   id: uuid('id').primaryKey().defaultRandom(),
   email: varchar('email', { length: 255 }).notNull(),
-  name: varchar('name', { length: 100 }).notNull(),
-  password: text('password_hash').notNull(),
+  name: varchar('name', { length: 100 }),
+  auth0Id: varchar('auth0_id', { length: 128 }),
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().$onUpdate(() => new Date()).notNull(),
 },
@@ -20,11 +20,10 @@ export const usersRelations = relations(UsersTable, ({ many }) => ({
   memberships: many(AccountMembershipsTable),
 }))
 
-export const createUserSchema = createInsertSchema(UsersTable)
+export const updateUserSchema = createInsertSchema(UsersTable)
   .pick({
     email: true,
     name: true,
-    password: true,
-  }).strict()
-
-export const updateUserSchema = createUserSchema.partial()
+  })
+  .partial()
+  .strict();

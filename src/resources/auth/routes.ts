@@ -1,12 +1,13 @@
-import { validateBody } from "@src/middleware/validate-body";
+
 import { Router } from "express";
-import passport from "passport";
-import { createUserSchema } from "../users/schema";
-import { login, signup } from "./controller";
+
+import { signup, login } from "./controller";
+import { signupSchema } from "./schema";
+import { validateBody } from "../../middleware/validate-body";
 
 const router = Router();
 
-router.post("/signup", validateBody(createUserSchema), signup);
-router.post("/login", passport.authenticate("local", { session: false }), login);
+router.post("/signup", validateBody(signupSchema), signup);
+router.post("/login", login);
 
 export default router;

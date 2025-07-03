@@ -3,10 +3,10 @@ import { UsersTable } from "@src/resources/users/schema";
 import { eq } from "drizzle-orm";
 import { CreateUserInput, UpdateUserInput, User } from "./types";
 
-export function sanitize(user: User | undefined): Omit<User, 'password'> {
+export function sanitize(user: User | undefined): Omit<User, 'auth0Id'> {
   if (!user) return undefined as any;
-  const { password, ...rest } = user
-  return rest
+  const { auth0Id, ...rest } = user;
+  return rest;
 }
 
 export default {
