@@ -4,7 +4,7 @@ import v1 from '@src/resources/v1'
 import { asyncHandler } from '@utils/async-handler'
 import express, { json, urlencoded } from 'express'
 
-import { checkJwt } from '@src/middleware/auth0-jwt'
+import { withAuth } from '@src/middleware/auth0-jwt'
 
 const app = express()
 const port = process.env.PORT!
@@ -13,7 +13,7 @@ app.use(urlencoded({ extended: false }))
 app.use(json())
 
 app.use("/auth", asyncHandler(authRoutes))
-app.use("/api/v1/", checkJwt, asyncHandler(v1))
+app.use("/api/v1/", withAuth, asyncHandler(v1))
 
 app.use(globalError)
 

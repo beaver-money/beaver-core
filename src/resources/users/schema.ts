@@ -1,7 +1,7 @@
 import { relations } from "drizzle-orm"
-import { pgTable, text, timestamp, uniqueIndex, uuid, varchar } from "drizzle-orm/pg-core"
-import { AccountMembershipsTable } from "../accounts/schema"
+import { pgTable, timestamp, uniqueIndex, uuid, varchar } from "drizzle-orm/pg-core"
 import { createInsertSchema } from "drizzle-zod"
+import { AccountMembershipsTable } from "../accounts/schema"
 
 export const UsersTable = pgTable('users', {
   id: uuid('id').primaryKey().defaultRandom(),

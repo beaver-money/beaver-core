@@ -6,7 +6,7 @@ export async function signup(req: Request, res: Response) {
   const { email, password } = req.body;
   try {
     // 1. Create user in Auth0
-    const { data: auth0User } = await axios.post(
+    await axios.post(
       `https://${process.env.AUTH0_DOMAIN}/dbconnections/signup`,
       {
         client_id: process.env.AUTH0_CLIENT_ID,
@@ -30,10 +30,17 @@ export async function signup(req: Request, res: Response) {
       }
     );
 
-    // 3. Store user in your DB (with Auth0 user_id)
+    // 3. Fetch user info from Auth0
+    const { data: userInfo } = await axios.get(
+      `https://${process.env.AUTH0_DOMAIN}/userinfo`,
+      { headers: { Authorization: `Bearer ${tokenData.access_token}` } }
+    );
+
+    // 4. Store user in your DB (with Auth0 user_id)
+    console.log({ userInfo })
     const [user] = await userService.create({
+      auth0Id: userInfo.sub,
       email,
-      auth0Id: auth0User._id || auth0User.user_id || auth0User.sub,
     });
 
     res.status(201).json({ user: sanitize(user), token: tokenData.access_token });
