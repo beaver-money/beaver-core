@@ -26,14 +26,18 @@ app.use("/api/v1/", withAuth, asyncHandler(v1));
 
 app.use(globalError);
 
-const keyPath = path.resolve(__dirname, '../server.key');
-const certPath = path.resolve(__dirname, '../server.cert');
-
-const options = {
-  key: fs.readFileSync(keyPath),
-  cert: fs.readFileSync(certPath),
-};
-
-https.createServer(options, app).listen(port, () => {
-  console.log(`HTTPS server running at https://localhost:${port}`);
-});
+if (process.env.NODE_ENV === 'production') {
+  app.listen(port, () => {
+    console.log(`HTTP server running at http://localhost:${port}`);
+  });
+} else {
+  const keyPath = path.resolve(__dirname, '../server.key');
+  const certPath = path.resolve(__dirname, '../server.cert');
+  const options = {
+    key: fs.readFileSync(keyPath),
+    cert: fs.readFileSync(certPath),
+  };
+  https.createServer(options, app).listen(port, () => {
+    console.log(`HTTPS server running at https://localhost:${port}`);
+  });
+}
