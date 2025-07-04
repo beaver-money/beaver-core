@@ -5,7 +5,6 @@ import userService, { sanitize } from "../resources/users/service";
 export async function signup(req: Request, res: Response) {
   const { email, password } = req.body;
   try {
-    // 1. Create user in Auth0
     await axios.post(
       `https://${process.env.AUTH0_DOMAIN}/dbconnections/signup`,
       {
@@ -16,7 +15,6 @@ export async function signup(req: Request, res: Response) {
       }
     );
 
-    // 2. Immediately log the user in to get a token
     const { data: tokenData } = await axios.post(
       `https://${process.env.AUTH0_DOMAIN}/oauth/token`,
       {
@@ -30,13 +28,11 @@ export async function signup(req: Request, res: Response) {
       }
     );
 
-    // 3. Fetch user info from Auth0
     const { data: userInfo } = await axios.get(
       `https://${process.env.AUTH0_DOMAIN}/userinfo`,
       { headers: { Authorization: `Bearer ${tokenData.access_token}` } }
     );
 
-    // 4. Store user in your DB (with Auth0 user_id)
     const [user] = await userService.create({
       auth0Id: userInfo.sub,
       email,
@@ -52,7 +48,6 @@ export async function signup(req: Request, res: Response) {
 export async function login(req: Request, res: Response) {
   const { email, password } = req.body;
   try {
-    // 1. Authenticate user with Auth0
     const { data: tokenData } = await axios.post(
       `https://${process.env.AUTH0_DOMAIN}/oauth/token`,
       {
@@ -66,7 +61,6 @@ export async function login(req: Request, res: Response) {
       }
     );
 
-    // 2. Optionally, fetch user info from your DB
     const user = await userService.findByEmail(email);
 
     res.status(200).json({ user: user ? sanitize(user) : null, token: tokenData.access_token });
