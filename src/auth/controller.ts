@@ -61,9 +61,21 @@ export async function login(req: Request, res: Response) {
       }
     );
 
-    const user = await userService.findByEmail(email);
+    let user = await userService.findByEmail(email);
 
-    res.status(200).json({ user: user ? sanitize(user) : null, token: tokenData.access_token });
+    if (!user) {
+      const { data: userInfo } = await axios.get(
+        `https://${process.env.AUTH0_DOMAIN}/userinfo`,
+        { headers: { Authorization: `Bearer ${tokenData.access_token}` } }
+      );
+      const [createdUser] = await userService.create({
+        auth0Id: userInfo.sub,
+        email,
+      });
+      user = createdUser;
+    }
+
+    res.status(200).json({ user: sanitize(user), token: tokenData.access_token });
   } catch (err: any) {
     res.status(401).json({ error: err.response?.data || err.message });
   }
