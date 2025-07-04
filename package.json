@@ -9,38 +9,33 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "dev": "node --import=tsx --watch --env-file=.env src/index.ts",
+    "test": "jest",
     "build": "tsc --project tsconfig.json",
     "dev-build": "node --env-file=.env dist/index.js",
-    "db:studio": "drizzle-kit studio",
-    "db:generate": "drizzle-kit generate",
-    "db:migrate": "drizzle-kit migrate",
-    "test": "jest"
+    "studio": "drizzle-kit studio",
+    "generate": "drizzle-kit generate",
+    "migrate": "drizzle-kit migrate"
   },
   "files": [
     "dist"
   ],
   "dependencies": {
     "axios": "^1.10.0",
-    "bcryptjs": "^3.0.2",
     "drizzle-orm": "^0.44.2",
     "drizzle-zod": "^0.8.2",
     "express": "^5.1.0",
     "express-jwt": "^8.5.1",
-    "jsonwebtoken": "^9.0.2",
     "jwks-rsa": "^3.2.0",
     "pg": "^8.16.3"
   },
   "devDependencies": {
-    "@types/bcryptjs": "^2.4.6",
     "@types/express": "^5.0.3",
     "@types/jest": "^30.0.0",
-    "@types/jsonwebtoken": "^9.0.10",
     "@types/lodash": "^4.17.20",
     "@types/pg": "^8.15.4",
     "@types/supertest": "^6.0.3",
     "drizzle-kit": "^0.31.4",
     "jest": "^30.0.4",
-    "jest-mock-axios": "^4.8.0",
     "lodash": "^4.17.21",
     "node-mocks-http": "^1.17.2",
     "supertest": "^7.1.1",

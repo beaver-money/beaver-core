@@ -37,7 +37,6 @@ export async function signup(req: Request, res: Response) {
     );
 
     // 4. Store user in your DB (with Auth0 user_id)
-    console.log({ userInfo })
     const [user] = await userService.create({
       auth0Id: userInfo.sub,
       email,
