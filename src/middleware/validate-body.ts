@@ -8,7 +8,6 @@ export const validateBody = (schema: any) => {
       req.body = parsed;
       next();
     } catch (error) {
-      console.error('Validation error:', typeof error);
       if (error instanceof z.ZodError) {
         const details = error.issues.map(err => ({
           message: `${err.path.join('.')} ${err.message}`,

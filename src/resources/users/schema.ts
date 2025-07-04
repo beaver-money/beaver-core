@@ -30,4 +30,4 @@ export const updateUserSchema = createInsertSchema(UsersTable)
   .strict()
   .extend({
     email: z.email().optional(),
-  });;
+  });
