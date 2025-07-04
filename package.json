@@ -8,14 +8,14 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "dev": "node --import=tsx --watch --env-file=.env src/index.ts",
+    "dev": "npm run generate-certs && node --import=tsx --watch --env-file=.env src/index.ts",
+    "generate-certs": "openssl req -nodes -new -x509 -keyout server.key -out server.cert -days 365 -subj \"/CN=localhost\" >/dev/null 2>&1",
     "test": "jest",
     "build": "tsc --project tsconfig.json",
     "dev-build": "node --env-file=.env dist/index.js",
     "studio": "drizzle-kit studio",
     "generate": "drizzle-kit generate",
-    "migrate": "drizzle-kit migrate",
-    "generate-certs": "openssl req -nodes -new -x509 -keyout server.key -out server.cert -days 365 -subj \"/CN=localhost\""
+    "migrate": "drizzle-kit migrate"
   },
   "files": [
     "dist"
