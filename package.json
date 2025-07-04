@@ -14,7 +14,8 @@
     "dev-build": "node --env-file=.env dist/index.js",
     "studio": "drizzle-kit studio",
     "generate": "drizzle-kit generate",
-    "migrate": "drizzle-kit migrate"
+    "migrate": "drizzle-kit migrate",
+    "generate-certs": "openssl req -nodes -new -x509 -keyout server.key -out server.cert -days 365 -subj \"/CN=localhost\""
   },
   "files": [
     "dist"
