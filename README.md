@@ -71,5 +71,45 @@ src/
 - `npm start` – Run production server
 - `npm test` – Run tests with Jest
 
+## Local Postgres Database Setup
+
+### 1. Install Postgres (if not already installed)
+- **macOS:**
+  ```sh
+  brew install postgresql
+  brew services start postgresql
+  ```
+
+### 2. Create a Local Database and User
+- Create a database:
+  ```sh
+  createdb beaver-core-db-local
+  ```
+- (Optional) Create a user:
+  ```sh
+  createuser myuser --pwprompt
+  # Then grant privileges if needed
+  psql -c "GRANT ALL PRIVILEGES ON DATABASE beaver-core-db-local TO myuser;"
+  ```
+
+### 3. Update Your .env
+Set your local `.env`:
+```
+DATABASE_URL=postgres://<user>:<password>@localhost:5432/beaver-core-db-local
+```
+Replace `<user>` and `<password>` with your local Postgres credentials.
+
+### 4. Generate and Run Migrations
+- Generate migration files (if you have schema changes):
+  ```sh
+  npm run generate
+  ```
+- Run migrations:
+  ```sh
+  npm run migrate
+  ```
+
+Your local database is now ready for local development and testing!
+
 ## License
 ISC
