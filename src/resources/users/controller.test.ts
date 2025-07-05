@@ -21,6 +21,8 @@ jest.mock('@src/resources/accounts/service', () => ({
   default: {
     findAccountsOwnedByUser: jest.fn().mockResolvedValue([]),
     deleteAccount: jest.fn().mockResolvedValue(undefined),
+    findMembershipByUserId: jest.fn().mockResolvedValue([]),
+    removeMembership: jest.fn().mockResolvedValue(undefined),
   },
 }));
 

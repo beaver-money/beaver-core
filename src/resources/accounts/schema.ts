@@ -2,6 +2,7 @@ import { relations } from "drizzle-orm"
 import { pgEnum, pgTable, primaryKey, timestamp, uuid, varchar } from "drizzle-orm/pg-core"
 import { UsersTable } from "../users/schema"
 import { createInsertSchema } from "drizzle-zod"
+import { z } from "zod/v4"
 
 export const AccountsTable = pgTable('accounts', {
   id: uuid('id').primaryKey().defaultRandom(),
@@ -10,12 +11,6 @@ export const AccountsTable = pgTable('accounts', {
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().$onUpdate(() => new Date()).notNull(),
 })
-
-export const createAccountSchema = createInsertSchema(AccountsTable)
-  .pick({
-    primaryUserId: true
-  })
-  .strict()
 
 export const AccountRoles = pgEnum('account_roles', [
   'OWNER',
@@ -56,3 +51,19 @@ export const accountMembershipsRelations = relations(AccountMembershipsTable, ({
     references: [UsersTable.id],
   }),
 }))
+
+export const createAccountSchema = createInsertSchema(AccountsTable)
+  .pick({
+    primaryUserId: true
+  })
+  .strict()
+
+export const createMembershipSchema = createInsertSchema(AccountMembershipsTable)
+  .pick({
+    userId: true,
+    role: true,
+  })
+  .strict()
+// .extend({
+//   userId: z.uuid()
+// })

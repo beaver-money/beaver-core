@@ -36,19 +36,27 @@ export async function deleteUser(req: Request, res: Response) {
     return;
   }
   try {
-
+    // Delete all accounts the user owns (cascades memberships deletion)
     const ownedAccounts = await accountService.findAccountsOwnedByUser(user.id);
     for (const account of ownedAccounts) {
       await accountService.deleteAccount(account.id);
     }
 
-    if (user.auth0Id) {
-      await deleteAuth0User(user.auth0Id);
-      await userService.delete(req.params.id);
+    // Remove user from all memberships (for accounts they do not own)
+    const memberships = await accountService.findMembershipByUserId(user.id);
+    for (const membership of memberships) {
+      if (!ownedAccounts.some(acc => acc.id === membership.accountId)) {
+        await accountService.removeMembership(membership.accountId, user.id);
+      }
     }
 
+    if (user.auth0Id) {
+      await deleteAuth0User(user.auth0Id);
+    }
+
+    await userService.delete(req.params.id);
     res.status(204).send();
   } catch (err: any) {
-    res.status(500).json({ error: "Failed to delete Auth0 user", details: err.response?.data || err.message });
+    res.status(500).json({ error: "Failed to delete user", details: err.response?.data || err.message });
   }
 }
