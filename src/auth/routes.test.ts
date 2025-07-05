@@ -18,7 +18,7 @@ describe('Auth Routes', () => {
     it('should call signup controller and return 201 (happy path)', async () => {
       const res = await request(app)
         .post('/signup')
-        .send({ email: 'test@example.com', password: 'password123' });
+        .send({ email: 'test@example.com', password: 'password123', name: 'Test User' });
       expect(res.status).toBe(201);
       expect(res.body).toEqual({ message: 'signed up' });
     });
@@ -26,7 +26,7 @@ describe('Auth Routes', () => {
     it('should return 400 for invalid email (unhappy path)', async () => {
       const res = await request(app)
         .post('/signup')
-        .send({ email: 'not-an-email', password: 'password123' });
+        .send({ email: 'not-an-email', password: 'password123', name: 'Test User' });
       expect(res.status).toBe(400);
       expect(res.body).toHaveProperty('error');
     });
@@ -52,7 +52,7 @@ describe('Auth Routes', () => {
     it('should call login controller and return 200 (happy path)', async () => {
       const res = await request(app)
         .post('/login')
-        .send({ email: 'test@example.com', password: 'password123' });
+        .send({ email: 'test@example.com', password: 'password123', name: 'Test User' });
       expect(res.status).toBe(200);
       expect(res.body).toEqual({ message: 'logged in' });
     });
