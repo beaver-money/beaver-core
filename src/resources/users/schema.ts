@@ -19,7 +19,7 @@ export const UsersTable = pgTable('users', {
 
 export const usersRelations = relations(UsersTable, ({ many }) => ({
   memberships: many(AccountMembershipsTable),
-}))
+}));
 
 export const updateUserSchema = createInsertSchema(UsersTable)
   .pick({

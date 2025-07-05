@@ -11,7 +11,19 @@ export function sanitize(user: User | undefined): Omit<User, 'auth0Id'> {
 
 export default {
   findAll: () => db.query.users.findMany(),
-  findById: (id: string) => db.query.users.findFirst({ where: (user, { eq }) => eq(user.id, id) }),
+
+  findById: (id: string) => db.query.users.findFirst({
+    where: (user, { eq }) => eq(user.id, id),
+    with: {
+      memberships: {
+        columns: {
+          accountId: true,
+          role: true,
+          joinedAt: true,
+        },
+      },
+    },
+  }),
   findByEmail: (email: string) => db.query.users.findFirst({ where: (user, { eq }) => eq(user.email, email) }),
   findByAuth0Id: (auth0Id: string) => db.query.users.findFirst({ where: (user, { eq }) => eq(user.auth0Id, auth0Id) }),
   create: (data: CreateUserInput) => db.insert(UsersTable).values(data).returning(),

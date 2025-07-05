@@ -15,6 +15,7 @@ export default {
   createAccount: (primaryUserId: string) =>
     db.insert(AccountsTable).values({
       primaryUserId,
+      name: "Default Account",
     }).returning(),
 
   addMembership: async (accountId: string, userId: string, role: AccountRole) => {
