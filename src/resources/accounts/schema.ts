@@ -1,18 +1,25 @@
 import { relations } from "drizzle-orm"
 import { pgEnum, pgTable, primaryKey, timestamp, uuid, varchar } from "drizzle-orm/pg-core"
 import { UsersTable } from "../users/schema"
+import { createInsertSchema } from "drizzle-zod"
 
 export const AccountsTable = pgTable('accounts', {
   id: uuid('id').primaryKey().defaultRandom(),
-  name: varchar('name', { length: 150 }).notNull(),
+  name: varchar('name', { length: 150 }),
   primaryUserId: uuid('primary_user_id').notNull().references(() => UsersTable.id),
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().$onUpdate(() => new Date()).notNull(),
 })
 
+export const createAccountSchema = createInsertSchema(AccountsTable)
+  .pick({
+    primaryUserId: true
+  })
+  .strict()
+
 export const AccountRoles = pgEnum('account_roles', [
   'OWNER',
-  'WRITE',
+  'READ/WRITE',
   'READ',
 ])
 

@@ -36,6 +36,20 @@
       "when": 1751737422493,
       "tag": "0004_curly_tinkerer",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1751737922834,
+      "tag": "0005_elite_wolfsbane",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1751739569233,
+      "tag": "0006_blushing_ulik",
+      "breakpoints": true
     }
   ]
 }
