@@ -13,7 +13,7 @@ app.use(urlencoded({ extended: false }));
 app.use(json());
 
 app.use("/auth", requireApiKey, asyncHandler(authRoutes));
-app.use("/api/v1/", withAuth, asyncHandler(v1));
+app.use("/api/v1", withAuth, asyncHandler(v1));
 
 app.use(globalError);
 

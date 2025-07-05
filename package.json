@@ -9,9 +9,10 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "test": "jest",
-    "build": "node esbuild.config.ts",
-    "dev": "npm run studio & node --import=tsx --watch --env-file=.env src/index.ts",
+    "build:prod": "node esbuild.config.ts",
+    "build": "npm run generate && npm run migrate && npm run test && npm run build:prod",
     "start": "node dist/index.cjs",
+    "dev": "npm run studio & node --import=tsx --watch --env-file=.env src/index.ts",
     "studio": "drizzle-kit studio",
     "generate": "drizzle-kit generate",
     "migrate": "drizzle-kit migrate"
