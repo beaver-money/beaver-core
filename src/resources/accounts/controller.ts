@@ -5,7 +5,7 @@ import accountService from "./service";
 export async function createAccount(req: Request, res: Response) {
   const { primaryUserId } = req.body;
   const [account] = await accountService.createAccount(primaryUserId);
-  await accountService.addMembership(account.id, primaryUserId);
+  await accountService.addMembership(account.id, primaryUserId, "OWNER");
   res.status(201).json({ account });
 }
 

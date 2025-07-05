@@ -17,7 +17,7 @@ export default {
       primaryUserId,
     }).returning(),
 
-  addMembership: async (accountId: string, userId: string, role?: AccountRole) => {
+  addMembership: async (accountId: string, userId: string, role: AccountRole) => {
     const existing = await db.query.account_memberships.findFirst({
       where: (membership, { eq, and }) =>
         and(eq(membership.accountId, accountId), eq(membership.userId, userId)),
@@ -25,10 +25,19 @@ export default {
     if (existing) {
       throw new Error("User is already a member of this account");
     }
+    if (role === "OWNER") {
+      const owner = await db.query.account_memberships.findFirst({
+        where: (membership, { eq, and }) =>
+          and(eq(membership.accountId, accountId), eq(membership.role, "OWNER")),
+      });
+      if (owner) {
+        throw new Error("This account already has an owner");
+      }
+    }
     return db.insert(AccountMembershipsTable).values({
       accountId,
       userId,
-      role: role || "OWNER",
+      role,
       joinedAt: new Date(),
     });
   },

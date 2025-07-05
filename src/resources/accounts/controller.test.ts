@@ -40,7 +40,7 @@ describe('accounts controller', () => {
       const res = httpMocks.createResponse();
       await controller.createAccount(req, res);
       expect(accountService.createAccount).toHaveBeenCalledWith('user-1');
-      expect(accountService.addMembership).toHaveBeenCalledWith('acc-1', 'user-1');
+      expect(accountService.addMembership).toHaveBeenCalledWith('acc-1', 'user-1', 'OWNER');
       expect(res.statusCode).toBe(201);
       expect(res._getJSONData()).toEqual({ account: fakeAccount });
     });

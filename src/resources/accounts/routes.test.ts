@@ -4,8 +4,8 @@ import express from 'express';
 jest.mock('@src/middleware/validate-body', () => ({
   validateBody: () => (req: any, res: any, next: any) => next(),
 }));
-jest.mock('@src/middleware/require-role', () => ({
-  requireRole: () => (req: any, res: any, next: any) => next(),
+jest.mock('./utils', () => ({
+  requireAccountOwner: (req: any, res: any, next: any) => next(),
 }));
 
 import router from './routes';

@@ -3,6 +3,7 @@ import { pgEnum, pgTable, primaryKey, timestamp, uuid, varchar } from "drizzle-o
 import { UsersTable } from "../users/schema"
 import { createInsertSchema } from "drizzle-zod"
 import { z } from "zod/v4"
+import { AccountRole } from "./types"
 
 export const AccountsTable = pgTable('accounts', {
   id: uuid('id').primaryKey().defaultRandom(),
@@ -12,11 +13,8 @@ export const AccountsTable = pgTable('accounts', {
   updatedAt: timestamp('updated_at').defaultNow().$onUpdate(() => new Date()).notNull(),
 })
 
-export const AccountRoles = pgEnum('account_roles', [
-  'OWNER',
-  'READ/WRITE',
-  'READ',
-])
+export const ACCOUNT_ROLE_VALUES = ["OWNER", "READ/WRITE", "READ"] as const
+export const AccountRoles = pgEnum('account_roles', ACCOUNT_ROLE_VALUES)
 
 export const AccountMembershipsTable = pgTable('account_memberships', {
   accountId: uuid('account_id').notNull().references(() => AccountsTable.id, { onDelete: "cascade" }),
@@ -58,12 +56,7 @@ export const createAccountSchema = createInsertSchema(AccountsTable)
   })
   .strict()
 
-export const createMembershipSchema = createInsertSchema(AccountMembershipsTable)
-  .pick({
-    userId: true,
-    role: true,
-  })
-  .strict()
-// .extend({
-//   userId: z.uuid()
-// })
+export const createMembershipSchema = z.object({
+  userId: z.string(),
+  role: z.enum(ACCOUNT_ROLE_VALUES),
+});

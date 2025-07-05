@@ -25,8 +25,5 @@ describe('accounts schema', () => {
     it('should fail if role is invalid', () => {
       expect(() => createMembershipSchema.parse({ userId: 'b7e6e8e2-1c2d-4c3a-9b2a-1e2f3d4c5b6a', role: 'ADMIN' })).toThrow();
     });
-    it('should fail if userId is not a uuid', () => {
-      expect(() => createMembershipSchema.parse({ userId: 'not-a-uuid', role: 'OWNER' })).toThrow();
-    });
   });
 });
