@@ -3,13 +3,14 @@ import { Request, Response } from "express";
 import userService, { sanitize } from "../resources/users/service";
 
 export async function signup(req: Request, res: Response) {
-  const { email, password } = req.body;
+  const { email, password, name } = req.body;
   try {
     await axios.post(
       `https://${process.env.AUTH0_DOMAIN}/dbconnections/signup`,
       {
         client_id: process.env.AUTH0_CLIENT_ID,
         email,
+        name,
         password,
         connection: "Username-Password-Authentication",
       }
@@ -36,6 +37,7 @@ export async function signup(req: Request, res: Response) {
     const [user] = await userService.create({
       auth0Id: userInfo.sub,
       email,
+      name
     });
 
     res.status(201).json({ user: sanitize(user), token: tokenData.access_token });

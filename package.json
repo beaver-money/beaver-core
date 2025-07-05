@@ -10,7 +10,7 @@
   "scripts": {
     "test": "jest",
     "build": "node esbuild.config.ts",
-    "dev": "node --import=tsx --watch src/index.ts",
+    "dev": "node --import=tsx --watch --env-file=.env src/index.ts",
     "start": "node dist/index.cjs",
     "studio": "drizzle-kit studio",
     "generate": "drizzle-kit generate",
