@@ -10,7 +10,7 @@
   "scripts": {
     "test": "jest",
     "build:prod": "tsx esbuild.config.ts",
-    "build": "npm run generate && npm run migrate && npm run test && npm run build:prod",
+    "build": "npm run test && npm run generate && npm run migrate && npm run build:prod",
     "start": "node dist/index.cjs",
     "dev": "npm run studio & node --import=tsx --watch --env-file=.env src/index.ts",
     "studio": "drizzle-kit studio",

@@ -16,8 +16,17 @@ jest.mock('@src/auth/utils', () => ({
   deleteAuth0User: jest.fn(),
 }));
 
+jest.mock('@src/resources/accounts/service', () => ({
+  __esModule: true,
+  default: {
+    findAccountsOwnedByUser: jest.fn().mockResolvedValue([]),
+    deleteAccount: jest.fn().mockResolvedValue(undefined),
+  },
+}));
+
 const userService = require('@src/resources/users/service').default;
 const { updateAuth0User, deleteAuth0User } = require('@src/auth/utils');
+const accountService = require('@src/resources/accounts/service').default;
 
 const fakeUser = { id: '1', email: 'a@b.com', name: 'Test', auth0Id: 'auth0|1', createdAt: new Date(), updatedAt: new Date() };
 
@@ -88,9 +97,22 @@ describe('users controller', () => {
   describe('deleteUser', () => {
     it('should delete user and Auth0 if found', async () => {
       userService.findById.mockResolvedValue(fakeUser);
+      accountService.findAccountsOwnedByUser.mockResolvedValue([]); // No owned accounts
       const req = httpMocks.createRequest({ params: { id: '1' } });
       const res = httpMocks.createResponse();
       await controller.deleteUser(req, res);
+      expect(deleteAuth0User).toHaveBeenCalledWith('auth0|1');
+      expect(userService.delete).toHaveBeenCalledWith('1');
+      expect(res.statusCode).toBe(204);
+    });
+    it('should delete user, Auth0, and owned accounts if found', async () => {
+      userService.findById.mockResolvedValue(fakeUser);
+      accountService.findAccountsOwnedByUser.mockResolvedValue([{ id: 'acc-1' }, { id: 'acc-2' }]);
+      const req = httpMocks.createRequest({ params: { id: '1' } });
+      const res = httpMocks.createResponse();
+      await controller.deleteUser(req, res);
+      expect(accountService.deleteAccount).toHaveBeenCalledWith('acc-1');
+      expect(accountService.deleteAccount).toHaveBeenCalledWith('acc-2');
       expect(deleteAuth0User).toHaveBeenCalledWith('auth0|1');
       expect(userService.delete).toHaveBeenCalledWith('1');
       expect(res.statusCode).toBe(204);

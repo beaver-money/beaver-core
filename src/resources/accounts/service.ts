@@ -22,4 +22,9 @@ export default {
       userId: userId,
       joinedAt: new Date(),
     }),
+
+  findAccountsOwnedByUser: (userId: string) =>
+    db.query.accounts.findMany({
+      where: (account, { eq }) => eq(account.primaryUserId, userId),
+    }),
 };
