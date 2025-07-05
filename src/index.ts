@@ -18,5 +18,5 @@ app.use("/api/v1", withAuth, asyncHandler(v1));
 app.use(globalError);
 
 app.listen(port, () => {
-  console.log(`📟 Server running at http://localhost:${port}`);
+  console.log(`\n📟 Server running at http://localhost:${port}\n`);
 });

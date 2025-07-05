@@ -11,14 +11,15 @@ export const AccountsTable = pgTable('accounts', {
 })
 
 export const AccountRoles = pgEnum('account_roles', [
-  'EDITOR',
-  'VIEWER',
+  'OWNER',
+  'WRITE',
+  'READ',
 ])
 
 export const AccountMembershipsTable = pgTable('account_memberships', {
   accountId: uuid('account_id').notNull().references(() => AccountsTable.id),
   userId: uuid('user_id').notNull().references(() => UsersTable.id),
-  role: AccountRoles('role').default('EDITOR').notNull(),
+  role: AccountRoles('role').default('OWNER').notNull(),
   invitedAt: timestamp('invited_at').defaultNow().notNull(),
   joinedAt: timestamp('joined_at'),
 },
