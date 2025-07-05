@@ -24,7 +24,7 @@ export const AccountRoles = pgEnum('account_roles', [
 ])
 
 export const AccountMembershipsTable = pgTable('account_memberships', {
-  accountId: uuid('account_id').notNull().references(() => AccountsTable.id),
+  accountId: uuid('account_id').notNull().references(() => AccountsTable.id, { onDelete: "cascade" }),
   userId: uuid('user_id').notNull().references(() => UsersTable.id),
   role: AccountRoles('role').default('OWNER').notNull(),
   invitedAt: timestamp('invited_at').defaultNow().notNull(),

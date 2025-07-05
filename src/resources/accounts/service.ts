@@ -1,7 +1,11 @@
 import { db } from "@src/db";
 import { AccountMembershipsTable, AccountsTable } from "./schema";
+import { eq, and } from "drizzle-orm";
 
 export default {
+  deleteAccount: (accountId: string) =>
+    db.delete(AccountsTable).where(eq(AccountsTable.id, accountId)),
+
   findMembershipByUserId: (userId: string) =>
     db.query.account_memberships.findFirst({
       where: (membership, { eq }) => eq(membership.userId, userId),

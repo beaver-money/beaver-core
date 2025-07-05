@@ -13,6 +13,7 @@ export default {
   findAll: () => db.query.users.findMany(),
   findById: (id: string) => db.query.users.findFirst({ where: (user, { eq }) => eq(user.id, id) }),
   findByEmail: (email: string) => db.query.users.findFirst({ where: (user, { eq }) => eq(user.email, email) }),
+  findByAuth0Id: (auth0Id: string) => db.query.users.findFirst({ where: (user, { eq }) => eq(user.auth0Id, auth0Id) }),
   create: (data: CreateUserInput) => db.insert(UsersTable).values(data).returning(),
   update: (id: string, data: UpdateUserInput) => db.update(UsersTable).set(data).where(eq(UsersTable.id, id)).returning(),
   delete: (id: string) => db.delete(UsersTable).where(eq(UsersTable.id, id)).returning(),
