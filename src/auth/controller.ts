@@ -71,8 +71,9 @@ export async function login(req: Request, res: Response) {
         { headers: { Authorization: `Bearer ${tokenData.access_token}` } }
       );
       const [createdUser] = await userService.create({
-        auth0Id: userInfo.sub,
-        email,
+        auth0Id: userInfo?.sub,
+        name: userInfo?.name,
+        email
       });
       user = createdUser;
     }
